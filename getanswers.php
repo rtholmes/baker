@@ -35,7 +35,7 @@ while ($row = $result->fetchArray()) {
 	echo "URL: "."<a href="."http://stackoverflow.com/questions/".$row['aid'].">http://stackoverflow.com/questions/".$row['aid']."</a>"."<br>";
    	echo "Code snippet number: ".$row['codeid']."<br>";
 	echo "Start location(char): ".$row['charat']."<br>";
-	echo "<a href= test.php/?aid=".$row['aid']."&codeid=".$row['codeid']."> Click to view code "."</a>";
+	echo "<a href= test.php/?aid=".$row['aid']."&codeid=".$row['codeid']."&charat=".$row['charat']."> Click to view code "."</a>";
 	echo "<br>";
 }
 }

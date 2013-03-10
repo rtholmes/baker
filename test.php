@@ -2,9 +2,25 @@
 <body onload="prettyPrint()">
 <pre class="prettyprint">
 <?php
-	//echo "<script type=\"text/javascript\" src=\"/google-code-prettify/prettify.js\"></script><body onload=\"prettyPrint()\"><pre class=\"prettyprint\">";
+function printarray($array,$charat) {
+   $temp=0;
+   foreach ($array as $key => $value) {
+	$temp=$temp+sizeof($value);
+	if($temp<$charat)
+		echo $value.PHP_EOL;
+	else
+		echo "<font color=\"red\">".$value.PHP_EOL."</font>";
+   }
+}
+
+function getlines($array) {
+$temp=explode(PHP_EOL,$array);
+return sizeof($temp);
+}
+	echo "<script type=\"text/javascript\" src=\"/google-code-prettify/prettify.js\"></script><body onload=\"prettyPrint()\"><pre class=\"prettyprint\">";
 	$codeid=$_GET['codeid'];
 	$aid=$_GET['aid'];
+	$charat=$_GET['charat'];
 	require('simplehtmldom/simple_html_dom.php');
 	$url = "http://stackoverflow.com/questions/".$aid;
 	$html = file_get_html($url);
@@ -17,23 +33,28 @@
 			$count=0;
 			foreach($div->find('code') as $code)
 			{	
+				if(getlines($code)>=2)
+				{
 				$count=$count+1;
 				if($count==$codeid)
 					{
-					echo "<p><code class>";
-					//$arr = preg_split('/\s+/', $code);
-					//var_dump($arr);
+					echo "<p><code>";
+					//$arr=split('     ', $code);
+					//traverse($arr);
 					echo $code;
-					echo "</code></p>";
+					$temp=explode(PHP_EOL,$code);
+					
+					echo "</code></p></br></br></br>";
+					echo(substr($code, intval($charat), 10));
+					echo getlines($code);
+					printarray($temp,$charat);
 					break;
 					}
-				
+				}
 			}
 
 		}
 	}
-
-//echo "</pre></body>";
 ?>
 </pre>
 </body>
