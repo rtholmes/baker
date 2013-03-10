@@ -36,7 +36,7 @@ while ($row = $result->fetchArray()) {
    	echo "Code snippet number: ".$row['codeid']."<br>";
 	echo "Start location(char): ".$row['charat']."<br>";
 	echo "<a href= test.php/?aid=".$row['aid']."&codeid=".$row['codeid']."&charat=".$row['charat']."> Click to view code "."</a>";
-	echo "<br>";
+	echo "</br></br></br>";
 }
 }
 ?>
