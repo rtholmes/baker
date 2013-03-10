@@ -1,15 +1,30 @@
-<script type="text/javascript" src="/google-code-prettify/prettify.js"></script>
-<body onload="prettyPrint()">
-<pre class="prettyprint">
+
 <?php
+echo("<html><body>");
+//echo("<link href=\"/google-code-prettify/prettify.css\" type=\"text/css\" rel=\"stylesheet\" />");
+echo("<script type=\"text/javascript\" src=\"/google-code-prettify/prettify.js\"></script>");
+echo("<pre class=\"prettyprint\">");
+echo("<code class=\"language-java\">");
 function printarray($array,$charat) {
-   $temp=0;
+$temp=0;
+$flag=0;
    foreach ($array as $key => $value) {
-	$temp=$temp+sizeof($value);
-	if($temp<$charat)
+	$temp=$temp+sizeof(str_split($value));
+	//echo $temp;
+	if($temp<$charat and $flag==0)
+	{
 		echo $value.PHP_EOL;
-	else
+	}
+	
+	else if($flag==0)
+	{
+		$flag=1;
 		echo "<font color=\"red\">".$value.PHP_EOL."</font>";
+	}
+	else if($flag==1)
+	{
+		echo $value.PHP_EOL;
+	}
    }
 }
 
@@ -17,7 +32,7 @@ function getlines($array) {
 $temp=explode(PHP_EOL,$array);
 return sizeof($temp);
 }
-	echo "<script type=\"text/javascript\" src=\"/google-code-prettify/prettify.js\"></script><body onload=\"prettyPrint()\"><pre class=\"prettyprint\">";
+
 	$codeid=$_GET['codeid'];
 	$aid=$_GET['aid'];
 	$charat=$_GET['charat'];
@@ -29,7 +44,6 @@ return sizeof($temp);
 	{		
     		if(strcmp('answer accepted-answer',$div->class)==0)
 		{
-			
 			$count=0;
 			foreach($div->find('code') as $code)
 			{	
@@ -38,15 +52,8 @@ return sizeof($temp);
 				$count=$count+1;
 				if($count==$codeid)
 					{
-					echo "<p><code>";
-					//$arr=split('     ', $code);
-					//traverse($arr);
 					echo $code;
 					$temp=explode(PHP_EOL,$code);
-					
-					echo "</code></p></br></br></br>";
-					echo(substr($code, intval($charat), 10));
-					echo getlines($code);
 					printarray($temp,$charat);
 					break;
 					}
@@ -55,7 +62,7 @@ return sizeof($temp);
 
 		}
 	}
+echo("</code>");
+echo("</pre>");
+echo("</body></html>");
 ?>
-</pre>
-</body>
-
