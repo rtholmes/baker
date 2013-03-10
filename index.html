@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8" />
+        <title>Android API search</title>
+    </head>
+    <body>
+        <div class="container">
+            <form action="getanswers.php" method="get">
+		<font color="red"><b>Instructions:</b> </font><br>
+					 Enter the API element you want examples for, <br>
+		             Choose if its an API class or a method,<br>
+					 Choose the level of precision needed in finding matches(1 : exact match) <br><br>
+		<font color="blue"><i>Sample API method queries:</i></font> <br>
+						  android.content.Context.getContentResolver() <br>
+						 android.media.MediaPlayer.release() <br><br>
+						 
+		 <font color="blue"><i>Sample API type queries:</i></font> <br>
+						 android.widget.ScrollView <br>
+						 android.view.animation.Animation <br><br>
+		API element name:<input type="text" name="name" id="autoc" autocomplete="off"><br>
+		<input type="radio" name="type" value="apitype">API Type<br>
+		<input type="radio" name="type" value="apimethod" checked>API Method<br>
+		Precision:
+		<select name="precision">
+		  <option value="1">1</option>
+		  <option value="2">2</option>
+ 		  <option value="3">3</option>
+ 		  <option value="4">4</option>
+ 		  <option value="5">5</option>
+		</select><br>
+		<input type="submit" value="get examples!">
+            </form>
+        </div>
+    </body>
+</html>
