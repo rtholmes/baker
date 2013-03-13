@@ -2,7 +2,7 @@
 echo("<html><body>");
 //echo("<link href=\"/google-code-prettify/prettify.css\" type=\"text/css\" rel=\"stylesheet\" />");
 echo("<script src=\"https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js\"></script>");
-echo("<pre class=prettyprint>");
+echo("<pre class=\"prettyprint linenums\">");
 function printarray($array,$charat) {
 $temp=0;
 $flag=0;
@@ -33,9 +33,9 @@ $temp=explode(PHP_EOL,$array);
 return sizeof($temp);
 }
 
-	$codeid=$_GET['codeid'];
-	$aid=$_GET['aid'];
-	$charat=$_GET['charat'];
+	$codeid=$_POST['codeid'];
+	$aid=$_POST['aid'];
+	$charat=$_POST['charat'];
 	require('simplehtmldom/simple_html_dom.php');
 	$url = "http://stackoverflow.com/questions/".$aid;
 	$html = file_get_html($url);
