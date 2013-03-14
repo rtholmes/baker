@@ -1,6 +1,5 @@
 <?php
 echo("<html><body>");
-//echo("<link href=\"/google-code-prettify/prettify.css\" type=\"text/css\" rel=\"stylesheet\" />");
 echo("<script src=\"https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js\"></script>");
 echo("<pre class=\"prettyprint linenums\">");
 
@@ -59,6 +58,9 @@ function getlineforchar($array,$charat,$code)
    }
 return getlines($code);
 }
+
+///////////////////////////////main////////////////////////////////////////////////////////
+
 	$db = new SQLite3('code.db');
 	$codeid=$_POST['codeid'];
 	$aid=$_POST['aid'];
@@ -75,7 +77,8 @@ return getlines($code);
 			$count=0;
 			foreach($div->find('code') as $code)
 			{	
-				if(getlines($code)>=2)
+				echo getlines($code);
+				if(getlines($code)>2)
 				{
 				$count=$count+1;
 				if($count==$codeid)
