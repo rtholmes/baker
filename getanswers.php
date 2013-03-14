@@ -53,6 +53,7 @@ else
 		echo "<input type=\"hidden\" name=\"aid\" value=\"".$row['aid']."\">";
 		echo "<input type=\"hidden\" name=\"codeid\" value=\"".$row['codeid']."\">";
 		echo "<input type=\"hidden\" name=\"charat\" value=\"".$row['charat']."\">";
+		echo "<input type=\"hidden\" name=\"ftype\" value=\"".$type."\">";
          	//$_POST['aid'] = $row['aid'];
 		//$_POST['codeid']=$row['codeid'];
 		//$_POST['charat']=$row['charat'];

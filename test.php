@@ -3,12 +3,13 @@ echo("<html><body>");
 //echo("<link href=\"/google-code-prettify/prettify.css\" type=\"text/css\" rel=\"stylesheet\" />");
 echo("<script src=\"https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js\"></script>");
 echo("<pre class=\"prettyprint linenums\">");
-function printarray($array,$charat) {
-$temp=0;
-$flag=0;
-   foreach ($array as $key => $value) {
+
+function printarray($array,$charat) 
+{
+	$temp=0;
+	$flag=0;
+	foreach ($array as $key => $value) {
 	$temp=$temp+sizeof(str_split($value));
-	//echo $temp;
 	if($temp<$charat-40 and $flag==0)
 	{
 		echo $value.PHP_EOL;
@@ -28,14 +29,41 @@ $flag=0;
    }
 }
 
-function getlines($array) {
-$temp=explode(PHP_EOL,$array);
-return sizeof($temp);
+function getlines($array) 
+{
+	$temp=explode(PHP_EOL,$array);
+	return sizeof($temp);
 }
 
+function getlineforchar($array,$charat,$code)
+{
+	$temp=0;
+	$flag=0;
+	$line=0;
+	foreach ($array as $key => $value) {
+	$temp=$temp+sizeof(str_split($value));
+	$line=$line+1;
+	if($temp<$charat and $flag==0)
+	{
+		//echo $value.PHP_EOL;
+	}
+	
+	else if($flag==0)
+	{
+		//$flag=1;
+		//echo "<font  style=\"background-color: yellow\">".$value.PHP_EOL."</font>";
+		if($temp>=$charat)
+			$flag=1;
+		return $line;
+	}
+   }
+return getlines($code);
+}
+	$db = new SQLite3('code.db');
 	$codeid=$_POST['codeid'];
 	$aid=$_POST['aid'];
 	$charat=$_POST['charat'];
+	$type=$_POST['ftype'];
 	require('simplehtmldom/simple_html_dom.php');
 	$url = "http://stackoverflow.com/questions/".$aid;
 	$html = file_get_html($url);
@@ -63,5 +91,41 @@ return sizeof($temp);
 		}
 	}
 echo("</pre>");
+$query1="select tname,charat,prob from types where aid= '{$aid}' and codeid={$codeid} order by prob";
+$query2="select mname,charat,prob from methods where aid= '{$aid}' and codeid={$codeid} order by prob";
+$result1 = $db->query($query1);
+$result2 = $db->query($query2);
+if (!$result1) 
+{
+	
+	die("Cannot find any example.\n");
+}
+else
+{	echo "Other Android API types:<br>";
+	echo "<table border=\"1\">";
+	echo "<th>API Type</th><th>Precision</th><th>Location (line no.)</th>";
+	while ($row = $result1->fetchArray()) {
+		$lno_end=getlineforchar($temp,$row['charat'],$code);
+		$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
+		if($lno_start<0)
+			$lno_start=0;
+		echo "<tr><td>".$row['tname']."</td><td>".$row['prob']."</td><td>".$lno_start."-".$lno_end."</td></tr>";	
+	}
+	echo "</table><br><br>";
+	echo "Other Android API methods:<br>";
+	echo "<table border=\"1\">";
+	echo "<th>API Method</th><th>Precision</th><th>Location (line no.)</th>";
+	while ($row = $result2->fetchArray()) {
+		$lno_end=getlineforchar($temp,$row['charat'],$code);
+		$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
+		if($lno_start<0)
+			$lno_start=0;
+		echo "<tr><td>".$row['mname']."</td><td>".$row['prob']."</td><td>".$lno_start."-".$lno_end."</td></tr>";
+	}
+	echo "</table><br><br>";
+}
+echo "</table>";
 echo("</body></html>");
+
+
 ?>
