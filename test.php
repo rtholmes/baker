@@ -62,10 +62,22 @@ return getlines($code);
 ///////////////////////////////main////////////////////////////////////////////////////////
 
 	$db = new SQLite3('code.db');
-	$codeid=$_POST['codeid'];
-	$aid=$_POST['aid'];
-	$charat=$_POST['charat'];
-	$type=$_POST['ftype'];
+	$codeid=$_GET['codeid'];
+	$aid=$_GET['aid'];
+	
+	
+	if (isset($_GET['charat'])) {
+	    $charat=$_GET['charat'];
+	}
+	else{
+		$charat=0;
+	}
+	if (isset($_GET['type'])) {
+	    $type=$_GET['ftype'];
+	}
+	else{
+		$type='';
+	}
 	require('simplehtmldom/simple_html_dom.php');
 	$url = "http://stackoverflow.com/questions/".$aid;
 	$html = file_get_html($url);
@@ -77,7 +89,7 @@ return getlines($code);
 			$count=0;
 			foreach($div->find('code') as $code)
 			{	
-				echo getlines($code);
+				//echo getlines($code);
 				if(getlines($code)>2)
 				{
 				$count=$count+1;

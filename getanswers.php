@@ -1,14 +1,14 @@
 <?php
-$name=trim($_POST['name']);
-$type=$_POST['type'];
-$precision=$_POST['precision'];
+$name=trim($_GET['name']);
+$type=$_GET['type'];
+$precision=$_GET['precision'];
 $name=SQLite3::escapeString($name);
 $name=htmlentities($name);
 //session_start(); 
 //echo $precision;
 $db = new SQLite3('code.db');
 
-if (!empty($_POST['name'])) {
+if (!empty($_GET['name'])) {
 
 	if(strcmp($type,'apitype')==0)
 	{
@@ -49,7 +49,7 @@ else
 		echo "URL: "."<a href="."http://stackoverflow.com/questions/".$row['aid'].">http://stackoverflow.com/questions/".$row['aid']."</a>"."<br>";
 	   	echo "Code snippet number: ".$row['codeid']."<br>";
 		echo "Start location(char): ".$row['charat']."<br>";
-		echo "<form method=\"post\" action=\"test.php\">";
+		echo "<form method=\"get\" action=\"test.php\">";
 		echo "<input type=\"hidden\" name=\"aid\" value=\"".$row['aid']."\">";
 		echo "<input type=\"hidden\" name=\"codeid\" value=\"".$row['codeid']."\">";
 		echo "<input type=\"hidden\" name=\"charat\" value=\"".$row['charat']."\">";
