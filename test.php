@@ -122,8 +122,8 @@ else
 	echo "<table border=\"1\">";
 	echo "<th>API Type</th><th>Precision</th><th>Location (line no.)</th>";
 	while ($row = $result1->fetchArray()) {
-		//$lno_end=getlineforchar($temp,$row['charat'],$code);
-		//$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
+		$lno_end=getlineforchar($temp,$row['charat'],$code);
+		$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
 		if($lno_start<0)
 			$lno_start=0;
 		echo "<tr><td>".$row['tname']."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";	
@@ -144,10 +144,10 @@ else
 	echo "<table border=\"1\">";
 	echo "<th>API Element</th><th>Method/Type</th><th>Precision</th><th>Location (line no.)</th>";
 	while ($row = $result3->fetchArray()) {
-		//$lno_end=getlineforchar($temp,$row['charat'],$code);
-		//$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
-		//if($lno_start<0)
-	//		$lno_start=0;
+		$lno_end=getlineforchar($temp,$row['charat'],$code);
+		$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
+		if($lno_start<0)
+			$lno_start=0;
 		if($row[4]==1)
 			$type1="type";
 		if($row[4]==2)
