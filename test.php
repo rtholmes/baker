@@ -106,9 +106,9 @@ return getlines($code);
 		}
 	}
 echo("</pre>");
-$query1="select tname,charat,prob from types where aid= '{$aid}' and codeid={$codeid} order by prob";
-$query2="select mname,charat,prob from methods where aid= '{$aid}' and codeid={$codeid} order by prob";
-$query3="select mname,charat,prob,1 from methods where aid= '{$aid}' and codeid={$codeid} UNION ALL select tname,charat,prob,2 from types where aid= '{$aid}' and codeid={$codeid} ORDER BY charat";
+$query1="select tname,charat,prob,line from types where aid= '{$aid}' and codeid={$codeid} order by prob";
+$query2="select mname,charat,prob,line from methods where aid= '{$aid}' and codeid={$codeid} order by prob";
+$query3="select mname,charat,prob,line,1 from methods where aid= '{$aid}' and codeid={$codeid} UNION ALL select tname,charat,prob,line,2 from types where aid= '{$aid}' and codeid={$codeid} ORDER BY charat";
 $result1 = $db->query($query1);
 $result2 = $db->query($query2);
 $result3 = $db->query($query3);
@@ -122,11 +122,11 @@ else
 	echo "<table border=\"1\">";
 	echo "<th>API Type</th><th>Precision</th><th>Location (line no.)</th>";
 	while ($row = $result1->fetchArray()) {
-		$lno_end=getlineforchar($temp,$row['charat'],$code);
-		$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
+		//$lno_end=getlineforchar($temp,$row['charat'],$code);
+		//$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
 		if($lno_start<0)
 			$lno_start=0;
-		echo "<tr><td>".$row['tname']."</td><td>".$row['prob']."</td><td>".$lno_start."-".$lno_end."</td></tr>";	
+		echo "<tr><td>".$row['tname']."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";	
 	}
 	echo "</table><br><br>";
 	echo "Other Android API methods:<br>";
@@ -137,23 +137,23 @@ else
 		$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
 		if($lno_start<0)
 			$lno_start=0;
-		echo "<tr><td>".$row['mname']."</td><td>".$row['prob']."</td><td>".$lno_start."-".$lno_end."</td></tr>";
+		echo "<tr><td>".$row['mname']."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";
 	}
 	echo "</table><br><br>";
 	echo "Methods and Types sorted by line number";
 	echo "<table border=\"1\">";
 	echo "<th>API Element</th><th>Method/Type</th><th>Precision</th><th>Location (line no.)</th>";
 	while ($row = $result3->fetchArray()) {
-		$lno_end=getlineforchar($temp,$row['charat'],$code);
-		$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
-		if($lno_start<0)
-			$lno_start=0;
-		if($row[3]==1)
+		//$lno_end=getlineforchar($temp,$row['charat'],$code);
+		//$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
+		//if($lno_start<0)
+	//		$lno_start=0;
+		if($row[4]==1)
 			$type1="type";
-		if($row[3]==2)
+		if($row[4]==2)
 			$type1="method";
 
-		echo "<tr><td>".$row['mname']."</td><td>".$type1."</td><td>".$row['prob']."</td><td>".$lno_start."-".$lno_end."</td></tr>";	
+		echo "<tr><td>".$row['mname']."</td><td>".$type1."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";	
 	}
 	echo "</table><br><br>";
 }
