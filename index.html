@@ -6,21 +6,78 @@
     </head>
     <body>
         <div class="container">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css" />
+<style>
+  .ui-autocomplete {
+    max-height: 300px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+  }
+  /* IE 6 doesn't support max-height
+   * we use height instead, but this forces the menu to always be this tall
+   */
+  * html .ui-autocomplete {
+    height: 100px;
+  }
+  </style>
+
+ <script>
+  $(function() {
+    var cache1 = {};
+    var cache2 = {};
+    //alert($("input[name='type']:checked").val());
+    $( "#autoname" ).autocomplete({
+      minLength: 2,
+      source: function( request, response ) {
+        var term = request.term;
+ 	if($("input[name='type']:checked").val()=="apimethod")
+ 	{
+ 	if ( term in cache1 ) {
+          response( cache1[ term ] );
+          return;
+        }
+        $.getJSON( "getautofillcontentmethod.php", request, function( data, status, xhr ) {
+          cache1[ term ] = data;
+          response( data );
+        });
+        }
+        else{
+        if ( term in cache2 ) {
+          response( cache2[ term ] );
+          return;
+        }
+        $.getJSON( "getautofillcontenttype.php", request, function( data, status, xhr ) {
+          cache2[ term ] = data;
+          response( data );
+        });
+        }
+        
+      }
+    });
+  });
+  </script>
             <form action="getanswers.php" method="get">
 		<font color="red"><b>Instructions:</b> </font><br>
 					 Enter the API element you want examples for, <br>
 		             Choose if its an API class or a method,<br>
 					 Choose the level of precision needed in finding matches(1 : exact match) <br><br>
+		
+		 <font color="blue"><i>Sample API type queries:</i></font> <br>
+						 android.widget.ScrollView <br>
+						 android.view.animation.Animation <br><br>
+						 
 		<font color="blue"><i>Sample API method queries:</i></font> <br>
 						  android.content.Context.getContentResolver() <br>
 						 android.media.MediaPlayer.release() <br><br>
 						 
-		 <font color="blue"><i>Sample API type queries:</i></font> <br>
-						 android.widget.ScrollView <br>
-						 android.view.animation.Animation <br><br>
-		API element name:<input type="text" name="name" id="autoc" autocomplete="off"><br>
+						 
 		<input type="radio" name="type" value="apitype">API Type<br>
 		<input type="radio" name="type" value="apimethod" checked>API Method<br>
+		API element name:<input type="text" name="name" id="autoname" /><br>
 		Precision:
 		<select name="precision">
 		  <option value="1">1</option>
