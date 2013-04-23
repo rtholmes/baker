@@ -12,7 +12,7 @@ if (get_magic_quotes_gpc())
 
 $db = new SQLite3('code.db');
 
-$query   = "select mname from method_names where mname like \"" . $_GET['term'] . "%\"";
+$query   = "select mname from method_names where mname like \"" . $_GET['term'] . "%\" LIMIT 10";
 $result1 = $db->query($query);
 $items   = array();
 if (!$result1) {
@@ -25,7 +25,7 @@ if (!$result1) {
 }
 if($items==null)
 {
-	$query1   = "select mname from method_names where mname like \"%" . $_GET['term'] . "%\"";
+	$query1   = "select mname from method_names where mname like \"%" . $_GET['term'] . "%\" LIMIT 10";
 	$result2 = $db->query($query1);
 	if (!$result2) {
 	} 

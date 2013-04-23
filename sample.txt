@@ -1,0 +1,86 @@
+LocationManager locationManager;
+String providerName = LocationManager.GPS_PROVIDER;
+LocationProvider gpsProvider;
+
+public void enable()
+{
+locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE); //Need to ask for this system service
+
+    Criteria criteria = new Criteria(); //Setting the criteria for the location provider
+    criteria.setAccuracy(Criteria.ACCURACY_FINE);
+    criteria.setPowerRequirement(Criteria.POWER_HIGH);
+    criteria.setAltitudeRequired(true);
+    criteria.setBearingRequired(true);
+    criteria.setSpeedRequired(true);
+    criteria.setCostAllowed(true);
+
+    String provider = LocationManager.GPS_PROVIDER;
+    int time = 5000; //Time in ms
+    int distance = 5; //Distance in meters
+
+    LocationListener myLocationListener = new LocationListener()
+    {
+        public void onLocationChanged(Location locations)
+        {
+            updateLocation(locations);
+
+        }
+
+        public void onProviderDisabled(String arg0) 
+        {
+            // TODO Auto-generated method stub
+        }
+
+        public void onProviderEnabled(String arg0) 
+        {
+            // TODO Auto-generated method stub
+        }
+
+        public void onStatusChanged(String arg0, int arg1, Bundle arg2) 
+        {
+            // TODO Auto-generated method stub
+        }
+    };
+
+    locationManager.requestLocationUpdates(provider, time, distance, myLocationListener);
+
+}
+/////////////////////////////////////////////////////////////////////////////////
+
+public void findLocation()
+{
+    gpsProvider = locationManager.getProvider(providerName);
+
+   //String bestProvider = locationManager.getBestProvider(criteria, true);
+
+    Location locations = locationManager.getLastKnownLocation(providerName);
+
+    updateLocation(locations);
+
+}
+
+public void updateLocation(Location locations)
+{
+    if (locations != null)
+    {
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+        double latitude = locations.getLatitude();
+        double longitude = locations.getLongitude();
+
+        List<Address> addresses = null;
+        Geocoder GCoder = new Geocoder(this, Locale.getDefault());
+        try
+        {
+            addresses = GCoder.getFromLocation(latitude, longitude, 10);
+
+            Address first = addresses.get(0);
+
+            Log.d("ADDRESS", first.toString());
+        }
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }            
+    }
+} 

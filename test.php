@@ -1,3 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8" />
+        <title>Android API search</title>
+
+</head>
+
+<link href="style.css" rel="stylesheet" type="text/css" />
+
+<body>
+<div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="Android API Search"><strong>Android API Search</strong></a></span></div>
+<div id="wrap">
+<div id="topbar">
+<h1 id="sitename"><a href="index.html">Android API Search</a></h1>
+<div id="menus">
+<ul id="topmenu">
+<li><a href="index.html">Home</a>
+</li>
+<li><a href="onlineextractor.html">Online API Extractor</a>
+</li>
+<li class="active"><a href="sodb.html">Stack Overflow Snippet Database</a>
+</li>
+<li><a href="#">Others</a>
+</li>
+</ul>
+</div>
+</div>
+
 <?php
 echo("<html><body>");
 echo("<script src=\"https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js\"></script>");
@@ -62,18 +91,18 @@ return getlines($code);
 ///////////////////////////////main////////////////////////////////////////////////////////
 
 	$db = new SQLite3('code.db');
-	$codeid=$_GET['codeid'];
-	$aid=$_GET['aid'];
+	$codeid=$_POST['codeid'];
+	$aid=$_POST['aid'];
 	
 	
-	if (isset($_GET['charat'])) {
-	    $charat=$_GET['charat'];
+	if (isset($_POST['charat'])) {
+	    $charat=$_POST['charat'];
 	}
 	else{
 		$charat=0;
 	}
-	if (isset($_GET['type'])) {
-	    $type=$_GET['ftype'];
+	if (isset($_POST['type'])) {
+	    $type=$_POST['ftype'];
 	}
 	else{
 		$type='';
@@ -140,7 +169,7 @@ else
 		echo "<tr><td>".$row['mname']."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";
 	}
 	echo "</table><br><br>";
-	echo "Methods and Types sorted by line number";
+	/*echo "Methods and Types sorted by line number";
 	echo "<table border=\"1\">";
 	echo "<th>API Element</th><th>Method/Type</th><th>Precision</th><th>Location (line no.)</th>";
 	while ($row = $result3->fetchArray()) {
@@ -155,9 +184,8 @@ else
 
 		echo "<tr><td>".$row['mname']."</td><td>".$type1."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";	
 	}
-	echo "</table><br><br>";
+	echo "</table><br><br>";*/
 }
-echo "</table>";
 echo("</body></html>");
 
 

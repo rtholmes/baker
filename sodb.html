@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8" />
+        <title>Android API search</title>
+
+</head>
+
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+
+<style>
+  .ui-autocomplete-loading { background: white url('images/ui-anim_basic_16x16.gif') right center no-repeat; }
+
+  .ui-autocomplete {
+    max-height: 300px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+  }
+  /* IE 6 doesn't support max-height
+   * we use height instead, but this forces the menu to always be this tall
+   */
+  * html .ui-autocomplete {
+    height: 100px;
+  }
+</style>
+<script>
+  $(function() {
+    var cache1 = {};
+    var cache2 = {};
+    //alert($("input[name='type']:checked").val());
+    $( "#autoname" ).autocomplete({
+      minLength: 2,
+      source: function( request, response ) {
+        var term = request.term;
+ 	if($("input[name='type']:checked").val()=="apimethod")
+ 	{
+ 	if ( term in cache1 ) {
+          response( cache1[ term ] );
+          return;
+        }
+        $.getJSON( "getautofillcontentmethod.php", request, function( data, status, xhr ) {
+          cache1[ term ] = data;
+          response( data );
+        });
+        }
+        else{
+        if ( term in cache2 ) {
+          response( cache2[ term ] );
+          return;
+        }
+        $.getJSON( "getautofillcontenttype.php", request, function( data, status, xhr ) {
+          cache2[ term ] = data;
+          response( data );
+        });
+        }
+        
+      }
+    });
+  });
+$(function() {
+    $(".getapi").click(function() {
+    	$("#dvloader").show();
+    	return false;
+    });
+});
+</script>
+
+
+<body>
+<div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="Android API Search"><strong>Android API Search</strong></a></span></div>
+<div id="wrap">
+<div id="topbar">
+<h1 id="sitename"><a href="index.html">Android API Search</a></h1>
+<div id="menus">
+<ul id="topmenu">
+<li><a href="index.html">Home</a>
+</li>
+<li><a href="onlineextractor.html">Online API Extractor</a>
+</li>
+<li class="active"><a href="#">Stack Overflow Snippet Database</a>
+</li>
+<li><a href="#">Others</a>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="header">
+</div>
+<div>
+
+            <form action="getanswers.php" method="get">
+		<h1><b>Instructions:</b><br></h1>
+					 Enter the API element you want examples for, <br>
+		             		 Choose if its an API class or a method,<br>
+					 Choose the level of precision needed in finding matches(1 : exact match) <br><br>
+		
+		<h2><font color="black">Sample API type queries:</font><br></h2>
+						 android.widget.ScrollView <br>
+						 android.view.animation.Animation <br><br>
+						 
+		<h2><font color="black">Sample API method queries:</font> <br></h2>
+
+		<a href="">android.content.Context.getContentResolver()</a> <br>
+						 android.media.MediaPlayer.release() <br><br>
+						 
+		<h2><font color="black">Enter:</font></h2><br>						 
+		<input type="radio" name="type" value="apitype" checked>API Type<br><br>
+		<input type="radio" name="type" value="apimethod">API Method<br><br>
+		API element name:<input type="text" name="name" id="autoname" /><br><br>
+		Precision:       
+		<select name="precision">
+		  <option value="1">1</option>
+		  <option value="2">2</option>
+ 		  <option value="3">3</option>
+ 		  <option value="4">4</option>
+ 		  <option value="5">5</option>
+		</select><br><br>
+		<input type="submit" value="GET EXAMPLES!" style="width: 200px; height: 30px">
+            </form>
+	    
+</div>
+
+</body>
+</html>

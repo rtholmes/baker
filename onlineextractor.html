@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8" />
+        <title>Online Android API Extractor</title>
+
+</head>
+<link href="style.css" rel="stylesheet" type="text/css" />
+
+<body>
+<div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="Android API Search"><strong>Android API Search</strong></a></span></div>
+<div id="wrap">
+<div id="topbar">
+<h1 id="sitename"><a href="index.html">Android API Search</a></h1>
+<div id="menus">
+<ul id="topmenu">
+<li ><a href="index.html">Home</a>
+</li>
+<li class="active"><a href="#">Online API Extractor</a>
+</li>
+<li><a href="sodb.html">Stack Overflow Snippet Database</a>
+</li>
+<li><a href="#">Others</a>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="header">
+</div>
+
+<br><br>
+
+<div style="float:left">
+<font color="red"><b>Paste your Android code snippet here:</b></font><br>
+<form action="getapifromcode.php" target="opcode" method="post">
+<textarea rows="25" cols="70" id="pastedcode" name="pastedcode">
+Paste your code here...
+</textarea><br><br>
+<input type="submit" value="IDENTIFY API USAGE!" id="getapi" name="getapi" style="width: 200px; height: 30px" >
+</form>
+</div>
+
+<div id="opframe" style="float:right">
+<font color="red"><b>Android API elements in entered code:</b></font><br>
+<iframe id="opcode" name="opcode" source="getapifromcode.php" height="400" width="550">
+</iframe>
+</div>
+
+</body>
+</html>
