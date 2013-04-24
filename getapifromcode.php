@@ -2,8 +2,9 @@
 
 $code=$_POST['pastedcode'];
 $file="sample.txt";
+echo "<script>alert(".$code.")</script>";
 $output=null;
-echo file_put_contents($file, $code)."<br>";
+//echo file_put_contents($file, $code)."<br>";
 file_put_contents($file, $code);
 //exec('cd snippetjar');
 //echo exec('whoami');
