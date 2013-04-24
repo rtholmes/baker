@@ -3,6 +3,7 @@
 $code=$_POST['pastedcode'];
 $file="sample.txt";
 $output=null;
+echo file_put_contents($file, $code)."<br>";
 file_put_contents($file, $code);
 //exec('cd snippetjar');
 //echo exec('whoami');
