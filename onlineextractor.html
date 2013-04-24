@@ -48,11 +48,10 @@
 <div style="float:left">
 <font color="red"><b>Paste your Android code snippet here:</b></font><br>
 <form action="getapifromcode.php" target="opcode" method="post">
-<script src="https://google-code-prettify.googlecode.com/svn/loader/prettify.js"></script>
-<script>
-</script>
 <textarea rows="25" cols="50" id="pastedcode" name="pastedcode" placeholder="Paste your code here...">
 </textarea><br><br>
+<input type="submit" value="IDENTIFY API USAGE!" id="getapi" name="getapi" style="width: 200px; height: 30px" >
+</form>
 <script> 
   var editor = CodeMirror.fromTextArea(document.getElementById("pastedcode"), {
     lineNumbers: true,
@@ -60,8 +59,6 @@
     mode: "text/x-java"
   });
 </script> 
-<input type="submit" value="IDENTIFY API USAGE!" id="getapi" name="getapi" style="width: 200px; height: 30px" >
-</form>
 </div>
 
 <div id="opframe" style="float:right">
