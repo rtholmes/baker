@@ -1,28 +1,9 @@
-private class TestBug extends AsyncTask&lt;String, Void, String&gt;
-{
-    @Override
-    protected void onPreExecute()
-    {
-        Log.d("TestBug","onPreExecute");
-
-        waiting = new ProgressDialog(TestActivity.this);
-        waiting.setMessage("Loading data");
-        waiting.setIndeterminate(true);
-        waiting.setCancelable(true);
-        waiting.show();
-    }
-
-    @Override
-    protected String doInBackground(String... params)
-    {
-        Log.d("TestBug","doInBackground");
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(String result)
-    {
-        waiting.cancel();
-        Log.d("TestBug","onPostExecute");
-    }
+public void startChrono() {
+    chrono.post(new Runnable() {
+        @Override
+        public void run() {
+            chrono.setBase(SystemClock.elapsedRealtime());
+            chrono.start();
+        }
+    });
 }

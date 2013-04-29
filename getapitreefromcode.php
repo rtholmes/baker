@@ -1,12 +1,5 @@
 <?php
- function utf8_urldecode($str) { 
-$str = preg_replace("/%u([0-9a-f]{3,4})/i","&#x\\1;",urldecode($str)); 
-return html_entity_decode($str,null,'UTF-8');
-}
-
-
 echo "<html><body>";
-
 
 $code=rawurldecode($_REQUEST['pastedcode']);
 //echo "<script>alert(\"".$code."\")</script>";
@@ -37,7 +30,7 @@ foreach ($jsonIterator as $key => $val) {
     }
 }*/
 //echo $output;
-echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('expandAll'); return false;\" value=\"Expand All\"/><br>";
+echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('expandAll'); return false;\" value=\"Expand All\"/>";
 echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('collapseAll'); return false;\" value=\"Collapse All\"/>";
 echo "<table id=\"apielements\" border=\"1\">";
 echo "<caption>API Listing</caption>
