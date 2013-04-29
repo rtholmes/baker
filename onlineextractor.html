@@ -2,16 +2,18 @@
 <html lang="en" >
     <head>
         <meta charset="utf-8" />
-        <title>Online Android API Extractor</title>
-
+        <title>Snippet Parser</title>
 </head>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+</script>
 
 <script src="CodeMirror/lib/codemirror.js"></script>
 <script src="CodeMirror/mode/clike/clike.js" type="text/javascript"></script>
 <link href="CodeMirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
 <link href="CodeMirror/theme/default.css" rel="stylesheet" type="text/css" />
 
+<link href="style.css" rel="stylesheet" type="text/css" />
 <style>
     .CodeMirror {
         border:1px solid #334;
@@ -21,7 +23,6 @@
 </style>
 
 
-<link href="style.css" rel="stylesheet" type="text/css" />
 <body>
 <div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="Android API Search"><strong>Android API Search</strong></a></span></div>
 <div id="wrap">
@@ -31,12 +32,12 @@
 <ul id="topmenu">
 <li ><a href="index.html">Home</a>
 </li>
-<li class="active"><a href="#">Online API Extractor</a>
+<li class="active"><a href="#">Snippet Parser</a>
 </li>
-<li><a href="sodb.html">Stack Overflow Snippet Database</a>
+<li><a href="sodb.html">Snippet Search</a>
 </li>
-<li><a href="#">Others</a>
-</li>
+<!--<li><a href="#">Others</a>
+</li>-->
 </ul>
 </div>
 </div>
@@ -47,24 +48,70 @@
 <br><br>
 <div style="float:left">
 <font color="red"><b>Paste your Android code snippet here:</b></font><br>
-<form action="getapifromcode.php" target="opcode" method="post">
+<!--<form action="getapitreefromcode.php" target="opcode" method="get">-->
 <textarea rows="25" cols="50" id="pastedcode" name="pastedcode" placeholder="Paste your code here...">
 </textarea><br><br>
-<input type="submit" value="IDENTIFY API USAGE!" id="getapi" name="getapi" style="width: 200px; height: 30px" >
-</form>
+<input type="button" value="Output as tree!" id="getapi" name="getapi" style="width: 200px; height: 30px" onclick="SendData()">
+<!--</form>-->
 <script> 
+$("#opframe").hide(); 
   var editor = CodeMirror.fromTextArea(document.getElementById("pastedcode"), {
     lineNumbers: true,
     matchBrackets: true,
     mode: "text/x-java"
   });
+function SendData()
+{
+$("#opframe").hide(); 
+$("#LoadingImage").show();
+var code = editor.getValue();
+//alert(code);
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+var url="getapitreefromcode.php";
+var params="pastedcode="+encodeURIComponent(code);
+xmlhttp.open("POST",url,true);
+xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlhttp.setRequestHeader("Content-length", params.length);
+xmlhttp.setRequestHeader("Connection", "close");
+
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {	
+	    $("#LoadingImage").hide(); 
+	    $("#opframe").show(); 
+  	    alert(xmlhttp.responseText);
+	    var ifrm = document.getElementById('opcode');
+            ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+            ifrm.document.open();
+            ifrm.document.write(xmlhttp.responseText);
+            ifrm.document.close();
+    }
+  }
+xmlhttp.send(params);
+
+
+}
+
 </script> 
 </div>
-
-<div id="opframe" style="float:right">
+<div>
+<div id="LoadingImage" style="display: none;float:right;z-index:1">
+<img src="images/loading.gif" />
+</div>
+<div id="opframe" style="display: none;float:right;z-index:0">
 <font color="red"><b>Android API elements in entered code:</b></font><br>
-<iframe id="opcode" name="opcode" source="getapifromcode.php" height="400" width="550">
+<iframe id="opcode" name="opcode" height="400" width="550">
 </iframe>
+</div>
 </div>
 
 </body>
