@@ -1,19 +1,28 @@
+private class TestBug extends AsyncTask&lt;String, Void, String&gt;
+{
+    @Override
+    protected void onPreExecute()
+    {
+        Log.d("TestBug","onPreExecute");
 
-   public byte[] encrypt(String text) throws Exception
-                {
-                        if(text == null || text.length() == 0)
-                                throw new Exception("Empty string");
+        waiting = new ProgressDialog(TestActivity.this);
+        waiting.setMessage("Loading data");
+        waiting.setIndeterminate(true);
+        waiting.setCancelable(true);
+        waiting.show();
+    }
 
-                        byte[] encrypted = null;
+    @Override
+    protected String doInBackground(String... params)
+    {
+        Log.d("TestBug","doInBackground");
+        return null;
+    }
 
-                        try {
-                                cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
-
-                                encrypted = cipher.doFinal(padString(text).getBytes());
-                        } catch (Exception e)
-                        {
-                                throw new Exception("[encrypt] " + e.getMessage());
-                        }
-
-                        return encrypted;
-                }
+    @Override
+    protected void onPostExecute(String result)
+    {
+        waiting.cancel();
+        Log.d("TestBug","onPostExecute");
+    }
+}

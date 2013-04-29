@@ -37,8 +37,8 @@ foreach ($jsonIterator as $key => $val) {
     }
 }*/
 //echo $output;
-echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('expandAll'); return false;\" value=\"Expand\"/><br>";
-echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('collapseAll'); return false;\" value=\"Collapse\"/>";
+echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('expandAll'); return false;\" value=\"Expand All\"/><br>";
+echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('collapseAll'); return false;\" value=\"Collapse All\"/>";
 echo "<table id=\"apielements\" border=\"1\">";
 echo "<caption>API Listing</caption>
         <thead>

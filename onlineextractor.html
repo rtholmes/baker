@@ -88,7 +88,7 @@ xmlhttp.onreadystatechange=function()
     {	
 	    $("#LoadingImage").hide(); 
 	    $("#opframe").show(); 
-  	    alert(xmlhttp.responseText);
+  	    //alert(xmlhttp.responseText);
 	    var ifrm = document.getElementById('opcode');
             ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
             ifrm.document.open();
