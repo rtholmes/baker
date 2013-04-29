@@ -12,6 +12,7 @@
 <script src="CodeMirror/mode/clike/clike.js" type="text/javascript"></script>
 <link href="CodeMirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
 <link href="CodeMirror/theme/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://jsonlint.com/c/js/jsl.format.js"></script>
 
 <link href="style.css" rel="stylesheet" type="text/css" />
 <style>
@@ -51,15 +52,37 @@
 <!--<form action="getapitreefromcode.php" target="opcode" method="get">-->
 <textarea rows="25" cols="50" id="pastedcode" name="pastedcode" placeholder="Paste your code here...">
 </textarea><br><br>
-<input type="button" value="Output as tree!" id="getapi" name="getapi" style="width: 200px; height: 30px" onclick="SendData()">
+<input type="button" value="Output as tree" id="getapi" name="getapi" style="width: 200px; height: 30px" onclick="SendData()">
+<input type="button" value="Output as JSON" id="getapijson" name="getapijson" style="width: 200px; height: 30px" onclick="SendDataForJson()">
 <!--</form>-->
 <script> 
 $("#opframe").hide(); 
-  var editor = CodeMirror.fromTextArea(document.getElementById("pastedcode"), {
+
+var editor = CodeMirror.fromTextArea(document.getElementById("pastedcode"), {
     lineNumbers: true,
     matchBrackets: true,
     mode: "text/x-java"
   });
+
+function syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/\</g, '&lt;').replace(/\>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+  
 function SendData()
 {
 $("#opframe").hide(); 
@@ -87,7 +110,7 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {	
 	    $("#LoadingImage").hide(); 
-	    $("#opframe").show(); 
+	    $("#opframe").show();
   	    //alert(xmlhttp.responseText);
 	    var ifrm = document.getElementById('opcode');
             ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
@@ -99,6 +122,55 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.send(params);
 
 
+}
+
+
+function SendDataForJson()
+{
+$("#opframe").hide(); 
+$("#LoadingImage").show();
+var code = editor.getValue();
+//alert(code);
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+var url="getapijsonfromcode.php";
+var params="pastedcode="+encodeURIComponent(code);
+xmlhttp.open("POST",url,true);
+xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlhttp.setRequestHeader("Content-length", params.length);
+xmlhttp.setRequestHeader("Connection", "close");
+
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {	    //alert("in here");
+	    $("#LoadingImage").hide(); 
+	    $("#opframe").show(); 
+  	    //alert(xmlhttp.responseText);
+	    //var ifrm = document.getElementById('opcode');
+            var ifrm = document.getElementById('opcode');
+
+ 	     
+	    //var formatted_json = jsl.format.formatJson(xmlhttp.responseText);
+	    //var op=JSON.stringify(xmlhttp.responseText, undefined, 2);
+	    //document.getElementById("optarea").value=formatted_json;
+	
+	    
+            ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+            ifrm.document.open();
+	    ifrm.document.write(xmlhttp.responseText);
+            ifrm.document.close();
+	
+    }
+  }
+xmlhttp.send(params);
 }
 
 </script> 
