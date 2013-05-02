@@ -17,11 +17,11 @@
 <ul id="topmenu">
 <li><a href="index.html">Home</a>
 </li>
-<li><a href="onlineextractor.html">Online API Extractor</a>
+<li><a href="onlineextractor.html">Snippet Parser</a>
 </li>
-<li class="active"><a href="sodb.html">Stack Overflow Snippet Database</a>
+<li><a href="sodb.html">Snippet Search</a>
 </li>
-<li><a href="#">Others</a>
+<!--<li><a href="#">Others</a>-->
 </li>
 </ul>
 </div>
@@ -29,7 +29,7 @@
 
 <?php
 echo("<html><body>");
-echo("<script src=\"https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js\"></script>");
+echo("<script src=\"google-code-prettify/run_prettify.js\"></script>");
 echo("<pre class=\"prettyprint linenums\">");
 
 function printarray($array,$charat) 
