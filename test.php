@@ -1,3 +1,17 @@
+<?php
+	$interval = 3000 * 60; // 30 minutes * 60 seconds per minute
+	$filename = "cache/test/".$_REQUEST['aid']."-".$_REQUEST['codeid']."-".$_REQUEST['charat'];
+	//$filename = "cache/".basename(rtrim($_SERVER["REQUEST_URI"], '/')).".cache";
+// serve from the cache if less than 30 minutes have passed since the file was created
+	if ( file_exists($filename) && (time() - $interval) < filemtime($filename) ) {
+		//echo "<script>alert(\"cache\")</script>";
+		readfile($filename);
+		exit(); // Terminate so we don't regenerate the page.
+	}
+ob_start(); // This function saves all output to a buffer instead of outputting it directly.
+
+	// PHP page generation code goes here
+?>
 <!DOCTYPE html>
 <html lang="en" >
     <head>
@@ -102,7 +116,7 @@ return getlines($code);
 		$charat=0;
 	}
 	if (isset($_POST['type'])) {
-	    $type=$_POST['ftype'];
+	    $type=$_POST['type'];
 	}
 	else{
 		$type='';
@@ -140,7 +154,7 @@ $query2="select mname,charat,prob,line from methods where aid= '{$aid}' and code
 $query3="select mname,charat,prob,line,1 from methods where aid= '{$aid}' and codeid={$codeid} UNION ALL select tname,charat,prob,line,2 from types where aid= '{$aid}' and codeid={$codeid} ORDER BY charat";
 $result1 = $db->query($query1);
 $result2 = $db->query($query2);
-$result3 = $db->query($query3);
+//$result3 = $db->query($query3);
 if (!$result1) 
 {
 	
@@ -187,6 +201,12 @@ else
 	echo "</table><br><br>";*/
 }
 echo("</body></html>");
+$buff = ob_get_contents(); // Retrive the content from the buffer
 
+	// Write the content of the buffer to the cache file
+	//$file = fopen( $filename, \"w\"" );
+	file_put_contents($filename, $buff);
+
+	ob_end_flush(); // Display the generated page.
 
 ?>
