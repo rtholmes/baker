@@ -1,3 +1,19 @@
+<?php
+	$interval = 3000 * 60; // 30 minutes * 60 seconds per minute
+	$filename = "cache/getanswers/".$_REQUEST['name'].$_REQUEST['precision'];
+	//$filename = "cache/".basename(rtrim($_SERVER["REQUEST_URI"], '/')).".cache";
+// serve from the cache if less than 30 minutes have passed since the file was created
+	if ( file_exists($filename) && (time() - $interval) < filemtime($filename) ) {
+		//echo "<script>alert(\"cache\")</script>";
+		readfile($filename);
+		exit(); // Terminate so we don't regenerate the page.
+	}
+ob_start(); // This function saves all output to a buffer instead of outputting it directly.
+
+	// PHP page generation code goes here
+?>
+
+
 <!DOCTYPE html>
 <html lang="en" >
     <head>
@@ -140,4 +156,13 @@ if (!$result) {
         echo "</br></br></br>";
     }
 }
+
+	$buff = ob_get_contents(); // Retrive the content from the buffer
+
+	// Write the content of the buffer to the cache file
+	//$file = fopen( $filename, \"w\"" );
+	file_put_contents($filename, $buff);
+
+	ob_end_flush(); // Display the generated page.
+
 ?>
