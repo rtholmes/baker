@@ -161,6 +161,12 @@ if (!$result) {
 
 	// Write the content of the buffer to the cache file
 	//$file = fopen( $filename, \"w\"" );
+if (!file_exists('cache')) {
+	    mkdir('cache');
+	}
+	if (!file_exists('cache/getanswers')) {
+	    mkdir('cache/getanswers');
+	}
 	file_put_contents($filename, $buff);
 
 	ob_end_flush(); // Display the generated page.

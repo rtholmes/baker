@@ -169,7 +169,7 @@ else
 		$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
 		if($lno_start<0)
 			$lno_start=0;
-		echo "<tr><td>".$row['tname']."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";	
+		echo "<tr><td>".htmlspecialchars($row['tname'])."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";	
 	}
 	echo "</table><br><br>";
 	echo "Other Android API methods:<br>";
@@ -180,7 +180,7 @@ else
 		$lno_start=getlineforchar($temp,$row['charat'],$code)-2;
 		if($lno_start<0)
 			$lno_start=0;
-		echo "<tr><td>".$row['mname']."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";
+		echo "<tr><td>".htmlspecialchars($row['mname'])."</td><td>".$row['prob']."</td><td>".$row['line']."</td></tr>";
 	}
 	echo "</table><br><br>";
 	/*echo "Methods and Types sorted by line number";
@@ -205,6 +205,13 @@ $buff = ob_get_contents(); // Retrive the content from the buffer
 
 	// Write the content of the buffer to the cache file
 	//$file = fopen( $filename, \"w\"" );
+if (!file_exists('cache')) {
+	    mkdir('cache');
+	}
+if (!file_exists('cache/test')) {
+	    mkdir('cache/test');
+	}
+
 	file_put_contents($filename, $buff);
 
 	ob_end_flush(); // Display the generated page.
