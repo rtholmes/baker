@@ -7,6 +7,9 @@
 </head>
 
 <link href="style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="jqcloud/jqcloud.css" />
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="jqcloud/jqcloud-1.0.3.min.js"></script>
 
 <body>
 <div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="Android API Search"><strong>Android API Search</strong></a></span></div>
@@ -17,11 +20,11 @@
 <ul id="topmenu">
 <li><a href="index.html">Home</a>
 </li>
-<li><a href="onlineextractor.html">Online API Extractor</a>
+<li><a href="onlineextractor.html">Snippet Parser</a>
 </li>
-<li  class="active"><a href="sodb.html">Stack Overflow Snippet Database</a>
+<li class="active"><a href="sodb.html">Snippet Search</a>
 </li>
-<li><a href="#">Others</a>
+<!--<li><a href="#">Others</a>-->
 </li>
 </ul>
 </div>
@@ -40,97 +43,64 @@
     -webkit-transform-origin: 0 0;
 }
 </style>
-<script type="text/javascript">
-
-/***********************************************
-* IFrame SSI script II- © Dynamic Drive DHTML code library (http://www.dynamicdrive.com)
-* Visit DynamicDrive.com for hundreds of original DHTML scripts
-* This notice must stay intact for legal use
-***********************************************/
-
-//Input the IDs of the IFRAMES you wish to dynamically resize to match its content height:
-//Separate each ID with a comma. Examples: ["myframe1", "myframe2"] or ["myframe"] or [] for none:
-var iframeids=["myframe"]
-
-//Should script hide iframe from browsers that don't support this script (non IE5+/NS6+ browsers. Recommended):
-var iframehide="yes"
-
-var getFFVersion=navigator.userAgent.substring(navigator.userAgent.indexOf("Firefox")).split("/")[1]
-var FFextraHeight=parseFloat(getFFVersion)>=0.1? 16 : 0 //extra height in px to add to iframe in FireFox 1.0+ browsers
-
-function resizeCaller() {
-var dyniframe=new Array()
-for (i=0; i<iframeids.length; i++){
-if (document.getElementById)
-resizeIframe(iframeids[i])
-//reveal iframe for lower end browsers? (see var above):
-if ((document.all || document.getElementById) && iframehide=="no"){
-var tempobj=document.all? document.all[iframeids[i]] : document.getElementById(iframeids[i])
-tempobj.style.display="block"
-}
-}
-}
-
-function resizeIframe(frameid){
-var currentfr=document.getElementById(frameid)
-if (currentfr && !window.opera){
-currentfr.style.display="block"
-if (currentfr.contentDocument && currentfr.contentDocument.body.offsetHeight) //ns6 syntax
-currentfr.height = currentfr.contentDocument.body.offsetHeight+FFextraHeight; 
-else if (currentfr.Document && currentfr.Document.body.scrollHeight) //ie5+ syntax
-currentfr.height = currentfr.Document.body.scrollHeight;
-if (currentfr.addEventListener)
-currentfr.addEventListener("load", readjustIframe, false)
-else if (currentfr.attachEvent){
-currentfr.detachEvent("onload", readjustIframe) // Bug fix line
-currentfr.attachEvent("onload", readjustIframe)
-}
-}
-}
-
-function readjustIframe(loadevt) {
-var crossevt=(window.event)? event : loadevt
-var iframeroot=(crossevt.currentTarget)? crossevt.currentTarget : crossevt.srcElement
-if (iframeroot)
-resizeIframe(iframeroot.id);
-}
-
-function loadintoIframe(iframeid, url){
-if (document.getElementById)
-document.getElementById(iframeid).src=url
-}
-
-if (window.addEventListener)
-window.addEventListener("load", resizeCaller, false)
-else if (window.attachEvent)
-window.attachEvent("onload", resizeCaller)
-else
-window.onload=resizeCaller
-</script>
 
 <?php
-$name      = trim($_GET['name']);
-$type      = $_GET['type'];
-$precision = $_GET['precision'];
+$name="";
+$precision="";
+$type="";
+if (isset($_REQUEST['name'])) {
+$name      = trim($_REQUEST['name']);
+}
+if (isset($_REQUEST['precision'])) {
+$precision = $_REQUEST['precision'];
+}
+if (isset($_REQUEST['type'])) {
+$type      = $_REQUEST['type'];
+}
+
 $name      = SQLite3::escapeString($name);
 $name      = htmlentities($name);
-//session_start(); 
-//echo $precision;
 $db        = new SQLite3('code.db');
+$query="";
+$other_top="";
 
-if (!empty($_GET['name'])) {
+if (!empty($_REQUEST['name'])) {
     
     if (strcmp($type, 'apitype') == 0) {
-        $query = "select tname,aid, codeid, charat from types where tname like '{$name}' and prob<={$precision}";
+        $query = "select tname,aid, codeid, charat,prob from types where tname like '{$name}' and prob<={$precision}";
+ 	$other_top=" select count(tname),types.tname from types, (select aid, codeid from types where tname=\"".$name."\" and prob=1) as temp where types.aid=temp.aid and types.codeid=temp.codeid group by types.tname order by count(tname) DESC limit 15";
     } else if (strcmp($type, 'apimethod') == 0) {
-        $query = "select mname,aid, codeid, charat from methods where mname like '{$name}' and prob<={$precision}";
+        $query = "select mname,aid, codeid, charat,prob from methods where mname like '{$name}' and prob<={$precision}";
+	$other_top="select count(mname),methods.mname from methods, (select aid, codeid from methods where mname=\"".$name."\" and prob=1) as temp where methods.aid=temp.aid and methods.codeid=temp.codeid group by methods.mname order by count(mname) DESC limit 15";
     }
 } else {
-    echo "enter an API element<br>";
+    echo "Enter avalid API element.<br>";
     $query = null;
 }
 
 $result = $db->query($query);
+$result1=$db->query($other_top);
+if (!$result1) {
+    die("Cannot find any other commonly used API.\n");
+}
+else{
+echo "<div id=\"wordcloud\" style=\"width:800px; height: 400px; position: relative;float:right;\">";
+echo "<h2><center>Other API commonly used with ".$name."</center></h2></div>";
+echo "<script type=\"text/javascript\">";
+
+echo   "var word_array = [";
+while ($row = $result1->fetchArray()) {
+if($row[1]!=$name && $row[1]!="int" && $row[1]!="float" && $row[1]!="char" && $row[1]!="byte" && $row[1]!="int[]" && $row[1]!="byte[]" && $row[1]!="char[]")
+	echo "{text: \"".$row[1]."\", weight:".$row[0].", link:\"http://localhost/snippet/getanswers.php?type=".$type."&name=".$row[1]."&precision=5\"},";
+}
+echo "{}];";
+
+
+echo "$(function() {  $(\"#wordcloud\").jQCloud(word_array); });";
+echo "</script>";
+
+}
+
 if (!$result) {
     
     die("Cannot find any example.\n");
@@ -141,15 +111,14 @@ if (!$result) {
         $i = $i + 1;
         echo "<h3>Example " . $i . " :</h3>";
         if (strcmp($type, 'apimethod') == 0) {
-            echo "API method: " . $row['mname'] . "<br>";
+            //echo "API method: " . $row['mname'] . "<br>";
         }
         if (strcmp($type, 'apitype') == 0) {
-            echo "API type: " . $row['tname'] . "<br>";
+            //echo "API type: " . $row['tname'] . "<br>";
         }
-        //session_destroy();
 	$url="http://stackoverflow.com/questions/" .$row['aid'];
-        echo "Code snippet number: " . $row['codeid'] . "<br>";
-        echo "Start location(char): " . $row['charat'] . "<br>";
+        echo "Precision: " . $row['prob'] . "<br>";
+        //echo "Start location(char): " . $row['charat'] . "<br>";
 	echo "URL: <a href=\"".$url."\">".$url."</a><br>";
 	
         echo "<form method=\"post\" action=\"test.php\" >";

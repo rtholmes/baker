@@ -8,7 +8,7 @@
 
 <link href="style.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="jquery-1.9.1.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
 
@@ -94,20 +94,20 @@ $(function() {
 </div>
 <div>
 
-            <form action="getanswers.php" method="get">
+            <form action="getanswers.php" method="post">
 		<h1><b>Instructions:</b><br></h1>
 					 Enter the API element you want examples for, <br>
 		             		 Choose if its an API class or a method,<br>
 					 Choose the level of precision needed in finding matches(1 : exact match) <br><br>
 		
 		<h2><font color="black">Sample API type queries:</font><br></h2>
-						 android.widget.ScrollView <br>
-						 android.view.animation.Animation <br><br>
+				<a href="http://localhost/snippet/getanswers.php?type=apitype&name=android.widget.ScrollView&precision=5">android.widget.ScrollView</a> <br>
+				<a href="http://localhost/snippet/getanswers.php?type=apitype&name=android.view.animation.Animation&precision=5">android.view.animation.Animation</a> <br><br>
 						 
 		<h2><font color="black">Sample API method queries:</font> <br></h2>
 
-		<a href="">android.content.Context.getContentResolver()</a> <br>
-						 android.media.MediaPlayer.release() <br><br>
+		         <a href="http://localhost/snippet/getanswers.php?type=apimethod&name=android.content.Context.getContentResolver()&precision=5">android.content.Context.getContentResolver()</a><br>
+			<a href="http://localhost/snippet/getanswers.php?type=apimethod&name=android.media.MediaPlayer.release()&precision=5">android.media.MediaPlayer.release() <br><br>
 						 
 		<h2><font color="black">Enter:</font></h2><br>						 
 		<input type="radio" name="type" value="apitype" checked>API Type<br><br>
