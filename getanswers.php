@@ -80,18 +80,25 @@ if (!empty($_REQUEST['name'])) {
 
 $result = $db->query($query);
 $result1=$db->query($other_top);
+
+echo "<h2 align=\"right\">Other API commonly used with ".$name."</h2><br><br><br>";
 if (!$result1) {
-    die("Cannot find any other commonly used API.\n");
+    die("<right>Cannot find any other commonly used API.</right>");
 }
+
 else{
-echo "<div id=\"wordcloud\" style=\"width:800px; height: 400px; position: relative;float:right;\">";
-echo "<h2><center>Other API commonly used with ".$name."</center></h2></div>";
+
+echo "<div id=\"wordcloud\" style=\"width:800px; height: 400px; position: relative;float:right;\"></div>";
+
 echo "<script type=\"text/javascript\">";
 
 echo   "var word_array = [";
 while ($row = $result1->fetchArray()) {
 if($row[1]!=$name && $row[1]!="int" && $row[1]!="float" && $row[1]!="char" && $row[1]!="byte" && $row[1]!="int[]" && $row[1]!="byte[]" && $row[1]!="char[]")
-	echo "{text: \"".$row[1]."\", weight:".$row[0].", link:\"http://localhost/snippet/getanswers.php?type=".$type."&name=".$row[1]."&precision=5\"},";
+	{
+		$x=intval($row[0]/10);
+		echo "{text: \"".$row[1]."\", weight:".$row[0].", link:\"getanswers.php?type=".$type."&name=".$row[1]."&precision=5\"},";
+	}
 }
 echo "{}];";
 
