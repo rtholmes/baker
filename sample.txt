@@ -1,9 +1,0 @@
-public void startChrono() {
-    chrono.post(new Runnable() {
-        @Override
-        public void run() {
-            chrono.setBase(SystemClock.elapsedRealtime());
-            chrono.start();
-        }
-    });
-}

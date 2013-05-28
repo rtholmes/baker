@@ -54,6 +54,14 @@
 </textarea><br><br>
 <input type="button" value="Output as tree" id="getapi" name="getapi" style="width: 200px; height: 30px" onclick="SendData()">
 <input type="button" value="Output as JSON" id="getapijson" name="getapijson" style="width: 200px; height: 30px" onclick="SendDataForJson()">
+<br><br><br>
+<h4>
+To access SnipParse as a web service and fetch JSON output, run the following command on the command line. Replace <i>filename</i> with the input file location.
+</h4>
+<br>
+<code>
+curl --data-urlencode "pastedcode@<i>filename</i>" http://awenda.cs.uwaterloo.ca/snippet/getapijsonfromcode.php
+</code>
 <!--</form>-->
 <script> 
 $("#opframe").hide(); 
@@ -185,6 +193,7 @@ xmlhttp.send(params);
 </iframe>
 </div>
 </div>
+
 
 </body>
 </html>

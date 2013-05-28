@@ -30,6 +30,7 @@ foreach ($jsonIterator as $key => $val) {
     }
 }*/
 //echo $output;
+echo "<font size=\"10\">";
 echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('expandAll'); return false;\" value=\"Expand All\"/>";
 echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('collapseAll'); return false;\" value=\"Collapse All\"/>";
 echo "<table id=\"apielements\" border=\"1\">";
@@ -79,7 +80,7 @@ foreach($val['elements'] as $element)
 $count=$count+1;
 }
 echo "</tbody></table>";
-
+echo "</font>";
 /*
 echo "<table id=\"examplebasic\">
         <caption>Basic jQuery treetable Example</caption>

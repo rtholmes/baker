@@ -65,7 +65,9 @@ $name="";
 $precision="";
 $type="";
 if (isset($_REQUEST['name'])) {
-$name      = trim($_REQUEST['name']);
+echo "<script>alert(".$_REQUEST['name'].")</script>";
+$name      = trim(rawurldecode(html_entity_decode(($_REQUEST['name']))));
+
 }
 if (isset($_REQUEST['precision'])) {
 $precision = $_REQUEST['precision'];
@@ -99,7 +101,7 @@ $result1=$db->query($other_top);
 
 echo "<h2 align=\"right\">Other API commonly used with ".$name."</h2><br><br><br>";
 if (!$result1) {
-    die("<right>Cannot find any other commonly used API.</right>");
+    echo "<right>Cannot find any other commonly used API.</right>";
 }
 
 else{
