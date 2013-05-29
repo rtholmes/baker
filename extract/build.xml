@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	Simplify generating structural data:
+	
+	 ant extract -Din ../classes_1.6.jar -Dout out.xml
+-->
+
+<project basedir="." default="" name="depFind">
+
+	<path id="java.classpath">
+		<fileset dir="lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<macrodef name="set.timestamp">
+		<sequential>
+			<tstamp>
+				<format property="current.time" pattern="MMddhhmm" />
+			</tstamp>
+		</sequential>
+	</macrodef>
+
+
+	<target name="extract" depends="" description="Extracts static facts">
+
+       <java classname="com.jeantessier.dependencyfinder.cli.DependencyExtractor"
+           fork="true"
+           failonerror="true"
+           maxmemory="1024m">
+		 	<arg value="-verbose"/>
+		 	<arg value="-xml"/>		
+		 	<arg line="-out ${out}"/>
+			<arg value="${in}"/>
+			<classpath refid="java.classpath" />		
+       </java>
+	</target>
+
+</project>
