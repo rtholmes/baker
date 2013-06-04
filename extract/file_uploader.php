@@ -65,7 +65,7 @@ foreach($pieces as $piece)
 $link=$link.$piece.'/';
 }
 echo "<script> alert(\"The file is now ready!\") </script>";
-echo "<br><br><a href=\"".$link."/output/".$output."\">"."Click here to download the zippled XML"."</a>";
+echo "<br><br><a href=\"".$link."output/".$output."\">"."Click here to download the zippled XML for ".$filename."</a>";
 ?>
 </body>
 </html>
