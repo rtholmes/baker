@@ -1,9 +1,43 @@
-<html>
-<body>
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8" />
+        <title>Android API search</title>
 
-<form action="file_uploader.php" method="post" enctype="multipart/form-data">
-<label for="file">Filename:</label><br>
-<input type="file" name="file" id="file"><br><br>
+</head>
+
+<link href="../style.css" rel="stylesheet" type="text/css" />
+<script>
+function submitForm()
+{
+	alert("This might take a while, you'll be notified once your download ready!");
+	document.getElementById("url").submit();
+}
+
+</script>
+<body>
+<div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="Android API Search"><strong>Android API Search</strong></a></span></div>
+<div id="wrap">
+<div id="topbar">
+<h1 id="sitename"><a href="../index.html">Android API Search</a></h1>
+<div id="menus">
+<ul id="topmenu">
+<li><a href="../index.html">Home</a>
+</li>
+<li><a href="../onlineextractor.html">Snippet Parser</a>
+</li>
+<li><a href="../sodb.html">Snippet Search</a>
+</li>
+<li class="active"><a href="fileupload.html">Oracle Generator</a>
+</li>
+<!--<li><a href="#">Others</a>-->
+</li>
+</ul>
+</div>
+</div>
+<form id="url" action="file_uploader.php" method="post" enctype="multipart/form-data" onSubmit="JavaScript:submitForm()">
+<label for="file"><h3>Enter JAR File URL:<h3></label><br>
+<input type="text" name="filename" id="filename"><br><br>
 <input type="submit" name="submit" value="Submit">
 </form>
 
