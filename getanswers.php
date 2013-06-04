@@ -40,6 +40,8 @@ ob_start(); // This function saves all output to a buffer instead of outputting 
 </li>
 <li class="active"><a href="sodb.html">Snippet Search</a>
 </li>
+<li><a href="extract/fileupload.html">Oracle Generator</a>
+</li>
 <!--<li><a href="#">Others</a>-->
 </li>
 </ul>
