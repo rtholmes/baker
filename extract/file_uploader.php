@@ -34,20 +34,14 @@ $file=$_POST['filename'];
 $pieces=explode('/',$file);
 foreach($pieces as $piece)
 	$filename=$piece;
-//echo $filename
 $newfile = $_SERVER['DOCUMENT_ROOT'] .'/snippet/extract/jars/'.$filename.'';
-exec('mkdir jars');
-//echo $newfile;
+exec('mkdir -p jars');
 if (copy($file, $newfile) ) {
     echo "File download from URL success!";
 }else{
     echo "File download from URL failed.";
 }
-//  echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-//  echo "Type: " . $_FILES["file"]["type"] . "<br>";
-//  echo "Size: " . ($_FILES["file"]["size"] / 1048576) . " MB<br>";
-//echo "Stored in: " . $_FILES["file"]["tmp_name"];
-exec('mkdir output');
+exec('mkdir -p output');
 exec('java -jar xml_zip_gen.jar jars/'.$filename,$output_array);
 $output="";
 foreach($output_array as $c)
