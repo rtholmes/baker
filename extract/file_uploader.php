@@ -41,6 +41,7 @@ if (copy($file, $newfile) ) {
 }else{
     echo "File download from URL failed.";
 }
+echo "<br><br>Building file for download.....";
 exec('mkdir -p output');
 exec('java -jar xml_zip_gen.jar jars/'.$filename,$output_array);
 $output="";
