@@ -33,10 +33,10 @@ if($items==null)
 	if (!$result2) {
 	} 
 	else {
-	    while ($row = $result2->fetchArray()) {
-       	 	array_push($items, $row['tname']);
-    	   }
-	}	
+       while ($row = $result2->fetchArray()) {
+          array_push($items, $row['tname']);
+      }
+  }	
 }
 echo json_encode($items);
 //echo json_encode(array_slice($items, 0, 10));

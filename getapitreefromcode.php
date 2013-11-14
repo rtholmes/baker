@@ -8,11 +8,11 @@ $file="sample.txt";
 
 file_put_contents($file, $code);
 
-exec('java -jar extract_fields.jar',$output_array);
+exec('java -Xmx2048m -jar JavaBaker.jar',$output_array);
 $output="";
 foreach($output_array as $c)
 {
-$output=$output.$c."\n";
+  $output=$output.$c."\n";
 }
 
 /*$jsonIterator = new RecursiveIteratorIterator(
@@ -28,40 +28,40 @@ foreach ($jsonIterator as $key => $val) {
     {
         echo "$key => $val<br>";
     }
-}*/
+  }*/
 //echo $output;
-echo "<font size=\"10\">";
-echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('expandAll'); return false;\" value=\"Expand All\"/>";
-echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('collapseAll'); return false;\" value=\"Collapse All\"/>";
-echo "<table id=\"apielements\" border=\"1\">";
-echo "<caption>API Listing</caption>
-        <thead>
-          <tr>
-	    <th>Element name</th>
-            <th>FQN</th>
-	    <th>Line number</th>
-	    <th>Method/Type</th>
-          </tr>
-        </thead>
-        <tbody>";
-$links = json_decode($output, TRUE);
-$count=0;
-$count2=0;
-foreach($links['api_elements'] as $key=>$val){ 
-$count2=0;
-echo "<tr data-tt-id=\"".$count."\">";
+  echo "<font size=\"10\">";
+  echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('expandAll'); return false;\" value=\"Expand All\"/>";
+  echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('collapseAll'); return false;\" value=\"Collapse All\"/>";
+  echo "<table id=\"apielements\" border=\"1\">";
+  echo "<caption>API Listing</caption>
+  <thead>
+  <tr>
+  <th>Element name</th>
+  <th>FQN</th>
+  <th>Line number</th>
+  <th>Method/Type</th>
+  </tr>
+  </thead>
+  <tbody>";
+  $links = json_decode($output, TRUE);
+  $count=0;
+  $count2=0;
+  foreach($links['api_elements'] as $key=>$val){ 
+    $count2=0;
+    echo "<tr data-tt-id=\"".$count."\">";
 
-if($val['precision']=="1")
-{	echo "<td align=\"left\">".htmlspecialchars($val['name'])."</td>";
-	echo "<td align=\"left\">".htmlspecialchars($val['elements'][0])."</td>";
-}
-else
-{
-	if($val['type']=="api_method")
-		echo "<td align=\"left\"> *.".htmlspecialchars($val['name'])."    (IMPRECISE)</td>";
-	else
-		echo "<td align=\"left\">*IMPRECISE*</td>";
-	echo "<td align=\"left\">*</td>";
+    if($val['precision']=="1")
+      {	echo "<td align=\"left\">".htmlspecialchars($val['name'])."</td>";
+    echo "<td align=\"left\">".htmlspecialchars($val['elements'][0])."</td>";
+  }
+  else
+  {
+   if($val['type']=="api_method")
+    echo "<td align=\"left\"> *.".htmlspecialchars($val['name'])."    (IMPRECISE)</td>";
+  else
+    echo "<td align=\"left\">*IMPRECISE*</td>";
+  echo "<td align=\"left\">*</td>";
 }
 echo "<td align=\"left\">".$val['line_number']."</td>";
 echo "<td align=\"left\">".$val['type']."</td>";
@@ -69,13 +69,13 @@ echo "</tr>";
 
 if($val['precision']>1)
 {
-foreach($val['elements'] as $element)
-	{		
-		echo "<tr data-tt-id=\"".$count.$count2."\" data-tt-parent-id=\"".$count."\">";
-		echo "<td align=\"left\" colspan = \"4\">".htmlspecialchars($element)."</td>";
-		echo "</tr>";
-		$count2=$count2+1;
-	}
+  foreach($val['elements'] as $element)
+  {		
+    echo "<tr data-tt-id=\"".$count.$count2."\" data-tt-parent-id=\"".$count."\">";
+    echo "<td align=\"left\" colspan = \"4\">".htmlspecialchars($element)."</td>";
+    echo "</tr>";
+    $count2=$count2+1;
+  }
 }
 $count=$count+1;
 }
