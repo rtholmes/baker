@@ -30,10 +30,10 @@ if($items==null)
 	if (!$result2) {
 	} 
 	else {
-	    while ($row = $result2->fetchArray()) {
-       	 	array_push($items, $row['mname']);
-    	   }
-	}	
+       while ($row = $result2->fetchArray()) {
+          array_push($items, $row['mname']);
+      }
+  }	
 }
 
 //echo json_encode(array_slice($items, 0, 10));

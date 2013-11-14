@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" >
-    <head>
-        <meta charset="utf-8" />
-        <title>Snippet Parser</title>
+<head>
+  <meta charset="utf-8" />
+  <title>Snippet Parser</title>
 </head>
 
 <script src="jquery-1.9.1.min.js">
@@ -16,29 +16,29 @@
 
 <link href="style.css" rel="stylesheet" type="text/css" />
 <style>
-    .CodeMirror {
-        border:1px solid #334;
-        width:550px;
-	height:400px;
-    }
+.CodeMirror {
+  border:1px solid #334;
+  width:550px;
+  height:400px;
+}
 </style>
 
 
 <body>
-<div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="Android API Search"><strong>Android API Search</strong></a></span></div>
-<div id="wrap">
-<div id="topbar">
-<h1 id="sitename"><a href="index.html">Android API Search</a></h1>
-<div id="menus">
-<ul id="topmenu">
-<li ><a href="index.html">Home</a>
-</li>
-<li class="active"><a href="#">Snippet Parser</a>
-</li>
-<li><a href="sodb.html">Snippet Search</a>
-</li>
-<li><a href="extract/fileupload.html">Oracle Generator</a>
-</li>
+  <div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="Java API Search"><strong>Java API Search</strong></a></span></div>
+  <div id="wrap">
+    <div id="topbar">
+      <h1 id="sitename"><a href="index.html">Java API Search</a></h1>
+      <div id="menus">
+        <ul id="topmenu">
+          <li ><a href="index.html">Home</a>
+          </li>
+          <li class="active"><a href="#">Snippet Parser</a>
+          </li>
+          <li><a href="sodb.html">Snippet Search</a>
+          </li>
+          <li><a href="extract/fileupload.html">Oracle Generator</a>
+          </li>
 <!--<li><a href="#">Others</a>
 </li>-->
 </ul>
@@ -50,154 +50,154 @@
 
 <br><br>
 <div style="float:left">
-<font color="red"><b>Paste your Android code snippet here:</b></font><br>
-<!--<form action="getapitreefromcode.php" target="opcode" method="get">-->
-<textarea rows="25" cols="50" id="pastedcode" name="pastedcode" placeholder="Paste your code here...">
-</textarea><br><br>
-<input type="button" value="Output as tree" id="getapi" name="getapi" style="width: 200px; height: 30px" onclick="SendData()">
-<input type="button" value="Output as JSON" id="getapijson" name="getapijson" style="width: 200px; height: 30px" onclick="SendDataForJson()">
-<br><br><br>
+  <font color="red"><b>Paste your Java code snippet here:</b></font><br>
+  <!--<form action="getapitreefromcode.php" target="opcode" method="get">-->
+  <textarea rows="25" cols="50" id="pastedcode" name="pastedcode" placeholder="Paste your code here...">
+  </textarea><br><br>
+  <input type="button" value="Output as tree" id="getapi" name="getapi" style="width: 200px; height: 30px" onclick="SendData()">
+  <input type="button" value="Output as JSON" id="getapijson" name="getapijson" style="width: 200px; height: 30px" onclick="SendDataForJson()">
+  <br><br><br>
 
-<!--</form>-->
-<script> 
-$("#opframe").hide(); 
+  <!--</form>-->
+  <script> 
+  $("#opframe").hide(); 
 
-var editor = CodeMirror.fromTextArea(document.getElementById("pastedcode"), {
+  var editor = CodeMirror.fromTextArea(document.getElementById("pastedcode"), {
     lineNumbers: true,
     matchBrackets: true,
     mode: "text/x-java"
   });
 
-function syntaxHighlight(json) {
+  function syntaxHighlight(json) {
     json = json.replace(/&/g, '&amp;').replace(/\</g, '&lt;').replace(/\>/g, '&gt;');
     return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var cls = 'number';
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-                cls = 'key';
-            } else {
-                cls = 'string';
-            }
-        } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-        } else if (/null/.test(match)) {
-            cls = 'null';
+      var cls = 'number';
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = 'key';
+        } else {
+          cls = 'string';
         }
-        return '<span class="' + cls + '">' + match + '</span>';
+      } else if (/true|false/.test(match)) {
+        cls = 'boolean';
+      } else if (/null/.test(match)) {
+        cls = 'null';
+      }
+      return '<span class="' + cls + '">' + match + '</span>';
     });
-}
+  }
   
-function SendData()
-{
-$("#opframe").hide(); 
-$("#LoadingImage").show();
-var code = editor.getValue();
+  function SendData()
+  {
+    $("#opframe").hide(); 
+    $("#LoadingImage").show();
+    var code = editor.getValue();
 //alert(code);
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
+    xmlhttp=new XMLHttpRequest();
   }
-else
+  else
   {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
 
-var url="getapitreefromcode.php";
-var params="pastedcode="+encodeURIComponent(code);
-xmlhttp.open("POST",url,true);
-xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xmlhttp.setRequestHeader("Content-length", params.length);
-xmlhttp.setRequestHeader("Connection", "close");
+  var url="getapitreefromcode_graph.php";
+  var params="pastedcode="+encodeURIComponent(code);
+  xmlhttp.open("POST",url,true);
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.setRequestHeader("Content-length", params.length);
+  xmlhttp.setRequestHeader("Connection", "close");
 
-xmlhttp.onreadystatechange=function()
+  xmlhttp.onreadystatechange=function()
   {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {	
-	    $("#LoadingImage").hide(); 
-	    $("#opframe").show();
+     $("#LoadingImage").hide(); 
+     $("#opframe").show();
   	    //alert(xmlhttp.responseText);
-	    var ifrm = document.getElementById('opcode');
-            ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
-            ifrm.document.open();
-            ifrm.document.write(xmlhttp.responseText);
-            ifrm.document.close();
-    }
-  }
-xmlhttp.send(params);
+       var ifrm = document.getElementById('opcode');
+       ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+       ifrm.document.open();
+       ifrm.document.write(xmlhttp.responseText);
+       ifrm.document.close();
+     }
+   }
+   xmlhttp.send(params);
 
 
-}
+ }
 
 
-function SendDataForJson()
-{
-$("#opframe").hide(); 
-$("#LoadingImage").show();
-var code = editor.getValue();
+ function SendDataForJson()
+ {
+  $("#opframe").hide(); 
+  $("#LoadingImage").show();
+  var code = editor.getValue();
 //alert(code);
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
+    xmlhttp=new XMLHttpRequest();
   }
-else
+  else
   {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
 
-var url="getapijsonfromcode.php";
-var params="pastedcode="+encodeURIComponent(code);
-xmlhttp.open("POST",url,true);
-xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xmlhttp.setRequestHeader("Content-length", params.length);
-xmlhttp.setRequestHeader("Connection", "close");
+  var url="getapijsonfromcode.php";
+  var params="pastedcode="+encodeURIComponent(code);
+  xmlhttp.open("POST",url,true);
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.setRequestHeader("Content-length", params.length);
+  xmlhttp.setRequestHeader("Connection", "close");
 
-xmlhttp.onreadystatechange=function()
+  xmlhttp.onreadystatechange=function()
   {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {	    //alert("in here");
-	    $("#LoadingImage").hide(); 
-	    $("#opframe").show(); 
+  $("#LoadingImage").hide(); 
+  $("#opframe").show(); 
   	    //alert(xmlhttp.responseText);
 	    //var ifrm = document.getElementById('opcode');
-            var ifrm = document.getElementById('opcode');
+      var ifrm = document.getElementById('opcode');
 
- 	     
+
 	    //var formatted_json = jsl.format.formatJson(xmlhttp.responseText);
 	    //var op=JSON.stringify(xmlhttp.responseText, undefined, 2);
 	    //document.getElementById("optarea").value=formatted_json;
-	
+
 	    
-            ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
-            ifrm.document.open();
-	    ifrm.document.write(xmlhttp.responseText);
-            ifrm.document.close();
-	
+      ifrm = (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+      ifrm.document.open();
+      ifrm.document.write(xmlhttp.responseText);
+      ifrm.document.close();
+
     }
   }
-xmlhttp.send(params);
+  xmlhttp.send(params);
 }
 
 </script> 
 </div>
 
 <div style="float:right">
-<div id="LoadingImage" style="display: none;float:right;z-index:1">
-<img src="images/loading.gif" />
-</div>
-<div id="opframe" style="display: none;float:right;z-index:0">
-<font color="red"><b>Android API elements in entered code:</b></font><br>
-<iframe id="opcode" name="opcode" height="400" width="550">
-</iframe>
-</div>
+  <div id="LoadingImage" style="display: none;float:right;z-index:1">
+    <img src="images/loading.gif" />
+  </div>
+  <div id="opframe" style="display: none;float:right;z-index:0">
+    <font color="red"><b>API elements in entered code:</b></font><br>
+    <iframe id="opcode" name="opcode" height="400" width="550">
+    </iframe>
+  </div>
 </div>
 <div style="float:left">
-<h4>
-To access SnipParse as a web service and fetch JSON output, run the following command on the command line. Replace <i>filename</i> with the input file location.
-</h4>
-<br>
-<code>
-curl --data-urlencode "pastedcode@<i>filename</i>" http://awenda.cs.uwaterloo.ca/snippet/getapijsonfromcode.php
-</code>
+  <h4>
+    To access SnipParse as a web service and fetch JSON output, run the following command on the command line. Replace <i>filename</i> with the input file location.
+  </h4>
+  <br>
+  <code>
+    curl --data-urlencode "pastedcode@<i>filename</i>" http://gadget.cs.uwaterloo.ca:2145/snippet/getapijsonfromcode.php
+  </code>
 </div>
 
 </body>
