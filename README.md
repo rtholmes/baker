@@ -1,4 +1,4 @@
 code-hunter
 ===========
 
-Snippet Parser website
+Snippet Parser website.
