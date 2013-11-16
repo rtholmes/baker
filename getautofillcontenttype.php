@@ -8,7 +8,7 @@ $q = strtolower($_GET["term"]);
 // remove slashes if they were magically added
 if (get_magic_quotes_gpc())
     $q = stripslashes($q);
-
+//ss
 
 $db = new SQLite3('code.db');
 
