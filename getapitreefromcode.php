@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 echo "<html><body>";
 
 $code=rawurldecode($_REQUEST['pastedcode']);

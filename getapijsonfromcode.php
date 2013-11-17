@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 /**
  * Execute a command and return it's output. Either wait until the command exits or the timeout has expired.
  *

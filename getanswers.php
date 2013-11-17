@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 	$interval = 3000 * 60; // 30 minutes * 60 seconds per minute
 	$filename = "cache/getanswers/".$_REQUEST['name'].$_REQUEST['precision'];
 	//$filename = "cache/".basename(rtrim($_SERVER["REQUEST_URI"], '/')).".cache";
@@ -18,7 +19,7 @@ ob_start(); // This function saves all output to a buffer instead of outputting 
 <html lang="en" >
 <head>
     <meta charset="utf-8" />
-    <title>Java API search</title>
+    <title>JavaBaker - Live API Documentation</title>
 
 </head>
 
@@ -28,10 +29,10 @@ ob_start(); // This function saves all output to a buffer instead of outputting 
 <script type="text/javascript" src="jqcloud/jqcloud-1.0.3.min.js"></script>
 
 <body>
-    <div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="Java API Search"><strong>Java API Search</strong></a></span></div>
+    <div class="style3"></div><div class="style_2"><span class="style3"><a href="" title="JavaBaker - Live API Documentation"><strong>JavaBaker - Live API Documentation</strong></a></span></div>
     <div id="wrap">
         <div id="topbar">
-            <h1 id="sitename"><a href="index.html">Java API Search</a></h1>
+            <h1 id="sitename"><a href="index.html">JavaBaker - Live API Documentation</a></h1>
             <div id="menus">
                 <ul id="topmenu">
                     <li><a href="index.html">Home</a>

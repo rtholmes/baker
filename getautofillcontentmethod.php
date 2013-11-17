@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 sleep(3);
 // no term passed - just exit early with no response
 if (empty($_GET['term']))
