@@ -87,8 +87,10 @@ function _format_json($json, $html = true) {
     $ignorenext = false; 
  
     if ($html) { 
-        $tab = "&nbsp;&nbsp;&nbsp;"; 
-        $newline = "<br/>"; 
+        //$tab = "&nbsp;&nbsp;&nbsp;"; 
+        //$newline = "<br/>"; 
+        $tab = "  "; 
+        $newline = ""; 
     } else { 
         $tab = "\t"; 
         $newline = "\n"; 
