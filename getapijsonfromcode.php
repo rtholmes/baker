@@ -133,19 +133,24 @@ function _format_json($json, $html = true) {
   }
 
 $code=rawurldecode($_REQUEST['pastedcode']);
-$file="sample.txt";
+//$file="sample.txt";
+$tstamp = time();
+$file = "inputs/ip_".strval($tstamp).".txt";
+$opfile = "outputs/op_".strval($tstamp).".txt";
 file_put_contents($file, $code);
 //exec('java -Xmx2048m -jar JavaBaker.jar',$output_array);
-$output_array = exec_timeout('java -Xmx2048m -jar JavaBaker.jar', 120);
+$output_array = exec_timeout('java -Xmx2048m -jar JavaBaker.jar '.$file, 300);
 //echo "<script>alert(\"".$output_array."\")</script>";
 //echo $output_array;
-/*$output="";
+$output="";
 $arrayOp = json_decode($output_array);
+/*
 foreach($arrayOp as $c)
 {
-	$output=$output.$c."<br>";
+	$output=$output.$c."\n";
 }
-echo $output;*/
+*/
+file_put_contents($opfile, $output_array);
 //echo "<script>alert(\"".$output_array."\")</script>";
 echo _format_json($output_array); 
 ?>
