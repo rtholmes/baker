@@ -132,11 +132,15 @@ function _format_json($json, $html = true) {
     return $result; 
   }
 
+
+$ip_address = $_SERVER['REMOTE_ADDR'];
+$new_ip = str_replace(".", "_", $ip_address);
+
 $code=rawurldecode($_REQUEST['pastedcode']);
 //$file="sample.txt";
 $tstamp = time();
-$file = "inputs/ip_".strval($tstamp).".txt";
-$opfile = "outputs/op_".strval($tstamp).".txt";
+$file = "inputs/ip_".$new_ip."_".strval($tstamp).".txt";
+$opfile = "outputs/op_".$new_ip."_".strval($tstamp).".txt";
 file_put_contents($file, $code);
 //exec('java -Xmx2048m -jar JavaBaker.jar',$output_array);
 $output_array = exec_timeout('java -Xmx2048m -jar JavaBaker.jar '.$file, 300);

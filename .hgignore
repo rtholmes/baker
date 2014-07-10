@@ -1,3 +1,10 @@
 syntax: glob
-sample.txt
-*~
+
+inputs/*
+outputs/*
+extract/*
+cache/*
+*.php~
+*.html~
+*.swp
+old\ dbs/*
