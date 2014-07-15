@@ -83,69 +83,120 @@ function exec_timeout($cmd, $timeout) {
   return $buffer;
 }
 
-$code=rawurldecode($_REQUEST['pastedcode']);
-//$file="sample.txt";
-//file_put_contents($file, $code);
-//exec('java -Xmx2048m -jar JavaBaker.jar',$output_array);
-$output_array = exec_timeout('java -Xmx2048m -jar JavaBaker.jar', 120);
-$output=$output_array;
-//echo $output;
 
-/*$jsonIterator = new RecursiveIteratorIterator(
-    new RecursiveArrayIterator(json_decode($output, TRUE)),
-    RecursiveIteratorIterator::SELF_FIRST);
-foreach ($jsonIterator as $key => $val) {
-
-    if(is_array($val)) 
-    {
-        echo "$key:<br>";
+function _format_json($json, $html = true) {
+    $tabcount = 0; 
+    $result = ''; 
+    $inquote = false; 
+    $ignorenext = false; 
+ 
+    if ($html) { 
+        //$tab = "&nbsp;&nbsp;&nbsp;"; 
+        //$newline = "<br/>"; 
+        $tab = "  "; 
+        $newline = ""; 
+    } else { 
+        $tab = "\t"; 
+        $newline = "\n"; 
     } 
-    else 
-    {
-        echo "$key => $val<br>";
-    }
-  }*/
-//echo $output;
-  echo "<font size=\"4\">";
-  echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('expandAll'); return false;\" value=\"Expand All\"/>";
-  echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('collapseAll'); return false;\" value=\"Collapse All\"/>";
-  echo "<table id=\"apielements\" border=\"1\">";
-  echo "<caption>API Listing</caption>
-  <thead>
-  <tr>
-  <th>Element name</th>
-  <th>FQN</th>
-  <th>Line number</th>
-  <th>Method/Type</th>
-  </tr>
-  </thead>
-  <tbody>";
-  $links = json_decode($output, TRUE);
-  $count=0;
-  $count2=0;
-  foreach($links['api_elements'] as $key=>$val){ 
-    $count2=0;
-    echo "<tr data-tt-id=\"".$count."\">";
-
-    if($val['precision']=="1")
-      {	echo "<td align=\"left\">".htmlspecialchars($val['name'])."</td>";
-    echo "<td align=\"left\">".htmlspecialchars($val['elements'][0])."</td>";
+ 
+    for($i = 0; $i < strlen($json); $i++) { 
+        $char = $json[$i]; 
+ 
+        if ($ignorenext) { 
+            $result .= $char; 
+            $ignorenext = false; 
+        } else { 
+            switch($char) { 
+                case '{': 
+                    $tabcount++; 
+                    $result .= $char . $newline . str_repeat($tab, $tabcount); 
+                    break; 
+                case '}': 
+                    $tabcount--; 
+                    $result = trim($result) . $newline . str_repeat($tab, $tabcount) . $char; 
+                    break; 
+                case ',': 
+                    $result .= $char . $newline . str_repeat($tab, $tabcount); 
+                    break; 
+                case '"': 
+                    $inquote = !$inquote; 
+                    $result .= $char; 
+                    break; 
+                case '\\': 
+                    if ($inquote) $ignorenext = true; 
+                    $result .= $char; 
+                    break; 
+                default: 
+                    $result .= $char; 
+            } 
+        } 
+    } 
+ 
+    return $result; 
   }
-  else
-  {
-   if($val['type']=="api_method")
-    echo "<td align=\"left\"> *.".htmlspecialchars($val['name'])."    (IMPRECISE)</td>";
-  else
-    echo "<td align=\"left\">*IMPRECISE*</td>";
+
+$ip_address = $_SERVER['REMOTE_ADDR'];
+$new_ip = str_replace(".", "_", $ip_address);
+$code=rawurldecode($_REQUEST['pastedcode']);
+
+$tstamp = time();
+$file = "inputs/ip_".$new_ip."_".strval($tstamp).".txt";
+$opfile = "outputs/op_".$new_ip."_".strval($tstamp).".txt";
+file_put_contents($file, $code);
+
+$output_array = exec_timeout('java -Xmx2048m -jar JavaBaker.jar '.$file, 300);
+$output = _format_json($output_array);
+
+echo $output;
+
+$links = json_decode($output, true);
+$count=0;
+$count2=0;
+$blah = "a";
+
+echo $links['api_elements'];
+
+echo "<font size=\"4\">";
+echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('expandAll'); return false;\" value=\"Expand All\"/>";
+echo "<input type=\"button\" onclick=\"jQuery('#apielements').treetable('collapseAll'); return false;\" value=\"Collapse All\"/>";
+echo "<table id=\"apielements\" border=\"1\">";
+echo "<caption>API Listing</caption>
+<thead>
+<tr>
+<th>Element name</th>
+<th>FQN</th>
+<th>Line number</th>
+<th>Method/Type</th>
+</tr>
+</thead>
+<tbody>";
+echo "<script type='text/javascript'>alert('$links');</script>";
+
+foreach($links['api_elements'] as $val){ 
+  $count2=0;
+  echo "<tr data-tt-id=\"".$count."\">";
+  $blah = "b";
+  if($val['precision']=="1"){	
+    $blah = $val['name'];
+    echo "<td align=\"left\">".htmlspecialchars($val['name'])."</td>";
+    echo "<td align=\"left\">".htmlspecialchars($val['elements'][0])."</td>";
+}
+else
+{
+ if($val['type']=="api_method")
+  echo "<td align=\"left\"> *.".htmlspecialchars($val['name'])."    (IMPRECISE)</td>";
+else
+  echo "<td align=\"left\">*IMPRECISE*</td>";
   echo "<td align=\"left\">*</td>";
 }
-echo "<td align=\"left\">".$val['line_number']."</td>";
-echo "<td align=\"left\">".$val['type']."</td>";
+echo "<td align=\"left\">".$val->line_number."</td>";
+echo "<td align=\"left\">".$val->type."</td>";
 echo "</tr>";
 
-if($val['precision']>1)
+if($val->precision > 1)
 {
-  foreach($val['elements'] as $element)
+  foreach($val->elements as $element)
   {		
     echo "<tr data-tt-id=\"".$count.$count2."\" data-tt-parent-id=\"".$count."\">";
     echo "<td align=\"left\" colspan = \"4\">".htmlspecialchars($element)."</td>";
@@ -157,36 +208,8 @@ $count=$count+1;
 }
 echo "</tbody></table>";
 echo "</font>";
-/*
-echo "<table id=\"examplebasic\">
-        <caption>Basic jQuery treetable Example</caption>
-        <thead>
-          <tr>
-            <th>Tree column</th>
-            <th>Additional data</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr data-tt-id=\"1\">
-            <td>Node 1: Click on the icon in front of me to expand this branch.</td>
-            <td>I live in the second column.</td>
-          </tr>
-          <tr data-tt-id=\"1.1\" data-tt-parent-id=\"1\">
-            <td>Node 1.1: Look, I am a table row <em>and</em> I am part of a tree!</td>
-            <td>Interesting.</td>
-          </tr>
-          <tr data-tt-id=\"1.1.1\" data-tt-parent-id=\"1.1\">
-            <td>Node 1.1.1: I am part of the tree too!</td>
-            <td>That's it!</td>
-          </tr>
-          <tr data-tt-id=\"2\">
-            <td>Node 2: I am another root node, but without children</td>
-            <td>Hurray!</td>
-          </tr>
-        </tbody>
-</table>";
-*/
 
+echo "<script type='text/javascript'>alert('$blah');</script>";
 echo "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js\"></script><link rel=\"stylesheet\" href=\"jquery.treetable.css\" /><link rel=\"stylesheet\" href=\"jquery.treetable.theme.default.css\" />";
 
 echo "<script src=\"jquery.treetable.js\"></script><script>$(\"#apielements\").treetable({ expandable: true }); </script></body></html>";
